@@ -135,6 +135,19 @@ public:
         drawarrow(this->win_num, xs, ys, xt, yt, s, w, i * 10 + j);
     }
 
+    void drow_text(float x, float y, int size, const char *args)
+    {
+        drawstr(this->win_num, x, y, size, 0.0, args);
+    }
+
+    void set_font(const char* font){
+        gsetfontset(this->win_num,font);
+    }
+
+    static int get_key(){
+        return ggetch();
+    }
+
     
 
     Weggx(const char *win_title = "space")
