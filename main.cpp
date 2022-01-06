@@ -4,6 +4,7 @@
 #include "weggx.hpp"
 #include "form.hpp"
 #include "test_scene.hpp"
+#include "minesweeper_core.hpp"
 
 using namespace std;
 
