@@ -169,7 +169,6 @@ public:
 
     ~Weggx()
     {
-        eggx_gclose(this->win_num);
     }
 };
 

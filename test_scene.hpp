@@ -8,7 +8,7 @@ class TestForm : public Form
 public:
     void initialize() override
     {
-        //gsetinitialattributes(DISABLE, BOTTOM_LEFT_ORIGIN);
+        gsetinitialattributes(DISABLE, BOTTOM_LEFT_ORIGIN);
     }
     Weggx* get_weggx(){
         return this->weggx;
@@ -16,7 +16,8 @@ public:
     void load() override
     {
         weggx->move_pen(250, 250);
-        weggx->drow_circle(500, 500);
+        weggx->drow_circle(50, 50);
+        weggx->show();
     }
     TestForm(Weggx *weggx)
     {
