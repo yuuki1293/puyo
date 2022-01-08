@@ -69,6 +69,10 @@
 			{
 				"fragment" : "-lm",
 				"role" : "libraries"
+			},
+			{
+				"fragment" : "-lpthread",
+				"role" : "libraries"
 			}
 		],
 		"language" : "CXX"

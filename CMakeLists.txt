@@ -6,4 +6,4 @@ include_directories(/usr/local/include)
 
 add_executable(mine_sweeper main.cpp)
 
-target_link_libraries(mine_sweeper eggx X11 m)
+target_link_libraries(mine_sweeper eggx X11 m pthread)

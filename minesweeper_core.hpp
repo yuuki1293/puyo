@@ -29,7 +29,7 @@ private:
     std::vector<posi> bombs;
     std::vector<posi> flags;
     std::vector<std::vector<bool>> opened;
-    int opened_count=0;
+    int opened_count = 0;
     int cells_count() { return row * column; }
     int row, column;
     std::random_device seed_gen;
@@ -37,33 +37,67 @@ private:
     int status;
 
 public:
-    // -4:範囲外だよ -3:もう開いてるよ -2:旗だよ -1:爆弾だよ 0~:周りの爆弾の数だよ
-    int click(posi cell)
+    /// -4:範囲外だよ -3:もう開いてるよ -2:旗だよ -1:爆弾だよ 0~:周りの爆弾の数だよ
+    int left_click(posi cell)
     {
+        //範囲外処理
         if (cell.row >= row || cell.column >= column)
             return -4;
+
+        //もう開いてるか
         if (opened[cell.row][cell.column])
             return -3;
+
+        //旗が立っているか
         for (size_t i = 0; i < flags.size(); i++)
             if (flags[i] == cell)
                 return -2;
+
+        //爆弾か
         for (size_t i = 0; i < bombs.size(); i++)
             if (bombs[i] == cell)
             {
-                status = 1;
+                status = 1; //フラグをゲームオーバーに設定
                 return -1;
             }
+
+        //クリア判定
         opened[cell.row][cell.column] = true;
         opened_count++;
         if (opened_count >= cells_count() - (int)bombs.size())
-            status = 2;
+            status = 2; //フラグをクリアに設定
+
+        //周りの爆弾の数
         int neighbor_boms_count = 0;
         for (size_t i = 0; i < bombs.size(); i++)
             if (cell.is_neighbor(bombs[i]))
                 neighbor_boms_count++;
         return neighbor_boms_count;
     }
-    // 0:プレイ中 1:ゲームオーバー 2:クリア
+
+    /// -4:範囲外だよ -3:もう開いてるよ 0:旗をつけたよ 1:旗を外したよ
+    int right_click(posi cell)
+    {
+        //範囲外処理
+        if (cell.row >= row || cell.column >= column)
+            return -4;
+
+        //もう開いてるか
+        if (opened[cell.row][cell.column])
+            return -3;
+
+        //旗が立っているか
+        for (size_t i = 0; i < flags.size(); i++)
+            if (flags[i] == cell)
+            {
+                flags.erase(flags.begin() + i); //旗を削除
+                return 1;
+            }
+        flags.push_back(cell); //旗を追加
+        return 0;
+    }
+
+    /// 0:プレイ中 1:ゲームオーバー 2:クリア
     int get_status() { return status; }
     MSCore(int, int, int);
     ~MSCore();
