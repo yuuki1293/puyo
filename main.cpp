@@ -2,6 +2,9 @@
 #define COLUMN 50
 #define ROW 40
 #define BOMBS 50
+
+#define UNKNOWN_COLOR "#E0E0E0"
+#define FLAG_COLOR "#F8FF00"
 /* config */
 
 #include <stdio.h>
@@ -25,13 +28,19 @@ void draw_cell(int type, int column, int row)
     switch (type)
     {
     case UNKNOWN:
+        weggx.set_pen_color(UNKNOWN_COLOR);
         weggx.draw_rect(column * 32 + 10, row * 32 + 200, 31, 31);
         break;
     case FLAG:{
+        weggx.set_pen_color(FLAG_COLOR);
         weggx.draw_rect(column * 32 + 10, row * 32 + 200, 31, 31, false);
-        double x[3]={(double)(column * 32 + 15), (double)(column * 32 + 26), (double)(column * 32 + 15)};
+        double x[3]={(double)(column * 32 + 20), (double)(column * 32 + 31), (double)(column * 32 + 20)};
         double y[3]={(double)(row * 32 + 205), (double)(row * 32 + 212), (double)(row * 32 + 219)};
         weggx.draw_poly(x, y, 3);
+        weggx.move_pen(column * 32 + 20,row * 32 + 219);
+        weggx.pen_down();
+        weggx.move_pen(column * 32 + 20,row * 32 + 230);
+        weggx.pen_up();
         break;}
     case BOMB:
         // TODO 爆弾を描画
@@ -96,17 +105,17 @@ void start()
             weggx.show();
         }
     }
-    if(mscore.get_status()==1)printf("ゲームオーバーだよ\n");
-    else printf("クリアだよ\n");
+    if(mscore.get_status()==1)printf("ゲームオーバーだよ!\n");
+    else printf("クリアだよ!\n");
 }
 
 int main()
 {
-    eggx_gsetinitialattributes(BOTTOM_LEFT_ORIGIN, DISABLE);
-    eggx_gsetinitialattributes(SCROLLBAR_INTERFACE, ENABLE);
-    eggx_gsetinitialattributes(MAX_WINDOW_SIZE, DISABLE);
-    eggx_gsetinitialattributes(OVERRIDE_REDIRECT, DISABLE);
-    eggx_gsetinitialattributes(DOCK_APPLICATION, DISABLE);
+    eggx_gsetinitialattributes(DISABLE, BOTTOM_LEFT_ORIGIN);
+    eggx_gsetinitialattributes(ENABLE, SCROLLBAR_INTERFACE);
+    eggx_gsetinitialattributes(DISABLE, MAX_WINDOW_SIZE);
+    eggx_gsetinitialattributes(DISABLE, OVERRIDE_REDIRECT);
+    eggx_gsetinitialattributes(DISABLE, DOCK_APPLICATION);
     setup();
     start();
     while (true)
