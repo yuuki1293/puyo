@@ -158,12 +158,12 @@ public:
             eggx_drawarc(this->win_num, this->penx, this->peny, xrad, yrad, sang, eang, idir);
     }
 
-    void draw_rect(double x1, double y1, double x2, double y2, bool fill = true)
+    void draw_rect(double x1, double y1, double width, double height, bool fill = true)
     {
         if (fill)
-            eggx_fillrect(this->win_num, x1, y1, (x2 - x1), (y2 - y1));
+            eggx_fillrect(this->win_num, x1, y1, width, height);
         else
-            eggx_drawrect(this->win_num, x1, y1, (x2 - x1), (y2 - y1));
+            eggx_drawrect(this->win_num, x1, y1, width, height);
     }
 
     void draw_poly(double x[], double y[], int n, int i = 0)
@@ -249,10 +249,8 @@ public:
         int ltype, lbutton;
         double lx, ly;
         int wn = 0;
-        printf("listner_th2\n");
         while (wn != this->win_num)
         {
-            printf("listner_th3\n");
             wn = eggx_ggetxpress(&ltype, &lbutton, &lx, &ly);
         }
         *type = ltype;
