@@ -166,9 +166,12 @@ public:
             eggx_drawrect(this->win_num, x1, y1, width, height);
     }
 
-    void draw_poly(double x[], double y[], int n, int i = 0)
+    void draw_poly(double x[], double y[], int n, bool fill = true, int i = 0)
     {
-        eggx_fillpoly(this->win_num, x, y, n, i);
+        if(fill)
+            eggx_fillpoly(this->win_num, x, y, n, i);
+        else
+            eggx_drawpoly(this->win_num, x, y, n);
     }
 
     void draw_arrow(double xs, double ys, double xt, double yt, double s, double w, int i, int j)
@@ -191,6 +194,11 @@ public:
     void draw_text(int size, const char *args)
     {
         eggx_drawstr(this->win_num, this->penx, this->peny, size, 0.0, args);
+    }
+
+    void draw_symbol(int size, int symbol_type)
+    {
+        eggx_drawsym(this->win_num, this->penx, this->peny, size, symbol_type);
     }
 
     void set_font(const char *font)
