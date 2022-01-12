@@ -6,42 +6,49 @@
 #include "event.hpp"
 #include <future>
 
-class UI
+struct UIInfo
 {
-private:
-    Weggx *weggx;
-    double height;
+    double x;
+    double y;
     double width;
-    double depth;
-    std::function<void(UI *, ClickEventArgs)> click_event = [](UI *e, ClickEventArgs args) {};
-    std::function<void(UI *, PressKeyEventArgs)> press_key_event = [](UI *e, PressKeyEventArgs args) {};
-    void initialize();
-
-public:
-    UI() {initialize();}
-    ~UI() { delete weggx; }
+    double height;
+    int depth;
+    const char *color;
 };
 
-void UI::initialize()
+class UI
 {
-    auto th = std::thread([this] {
-        int wn,type,button;
-        double x,y;
-        while (true)
-        {
-            if(eggx_ggetxpress(&type,&button,&x,&y) == this->weggx->get_window_number()){
-                switch (type)
-                {
-                case ButtonPress:
-                    this->click_event(this,ClickEventArgs{x,y,button});
-                    break;
-                case KeyPress:
-                    this->press_key_event(this,PressKeyEventArgs{x,y,button});
-                }
-            }
-        }
-    });
-    th.join();
+protected:
+    Weggx *weggx;
+
+public:
+    UI(Weggx *, UIInfo);
+    ~UI();
+    bool operator<(const UI *r)
+    {
+        return this->info.depth < r->info.depth;
+    }
+    bool operator>(const UI *r)
+    {
+        return this->info.depth > r->info.depth;
+    }
+    std::function<void(UI *, ClickEventArgs)> click_event = [](UI *e, ClickEventArgs args) {};
+    std::function<void(UI *, PressKeyEventArgs)> press_key_event = [](UI *e, PressKeyEventArgs args) {};
+    std::function<void()> drow = [] {};
+    std::function<bool(UI *, ClickEventArgs)> on_cursor = [](UI *e, ClickEventArgs args)
+    { return false; };
+    UIInfo info;
+    bool visible = true;
+};
+
+UI::UI(Weggx *weggx, UIInfo info)
+{
+    this->weggx = weggx;
+    this->info = info;
+}
+
+UI::~UI()
+{
 }
 
 #endif // USER_INTERFACE_HPP

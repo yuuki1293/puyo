@@ -30,6 +30,13 @@ public:
         return this->win_num;
     }
 
+    void set_window_size(int width, int height)
+    {
+        eggx_gresize(this->win_num, width, height);
+        win_info.width = width;
+        win_info.height = height;
+    }
+
     static void close_all()
     {
         eggx_gcloseall();
@@ -95,7 +102,7 @@ public:
         eggx_gclr(this->win_num);
     }
 
-    void drow_point(double x, double y)
+    void draw_point(double x, double y)
     {
         eggx_pset(this->win_num, x, y);
     }
@@ -134,7 +141,7 @@ public:
         eggx_line(this->win_num, x, y, pen_mode);
     }
 
-    void drow_circle(double x, double y, double xrad, double yrad, bool fill = true, double sang = 0, double eang = 360, int idir = 1)
+    void draw_circle(double x, double y, double xrad, double yrad, bool fill = true, double sang = 0, double eang = 360, int idir = 1)
     {
         if (fill)
             eggx_fillarc(this->win_num, x, y, xrad, yrad, sang, eang, idir);
@@ -143,7 +150,7 @@ public:
     }
 
     /// x, y = penx, peny
-    void drow_circle(double xrad, double yrad, bool fill = true, double sang = 0, double eang = 360, int idir = 1)
+    void draw_circle(double xrad, double yrad, bool fill = true, double sang = 0, double eang = 360, int idir = 1)
     {
         if (fill)
             eggx_fillarc(this->win_num, this->penx, this->peny, xrad, yrad, sang, eang, idir);
@@ -151,7 +158,7 @@ public:
             eggx_drawarc(this->win_num, this->penx, this->peny, xrad, yrad, sang, eang, idir);
     }
 
-    void drow_rect(double x1, double y1, double x2, double y2, bool fill = true)
+    void draw_rect(double x1, double y1, double x2, double y2, bool fill = true)
     {
         if (fill)
             eggx_fillrect(this->win_num, x1, y1, (x2 - x1), (y2 - y1));
@@ -159,7 +166,7 @@ public:
             eggx_drawrect(this->win_num, x1, y1, (x2 - x1), (y2 - y1));
     }
 
-    void drow_poly(double x[], double y[], int n, int i = 0)
+    void draw_poly(double x[], double y[], int n, int i = 0)
     {
         eggx_fillpoly(this->win_num, x, y, n, i);
     }
@@ -175,13 +182,13 @@ public:
         eggx_drawarrow(this->win_num, this->penx, this->peny, xt, yt, s, w, i * 10 + j);
     }
 
-    void drow_text(int size, const char *args, double x, double y)
+    void draw_text(int size, const char *args, double x, double y)
     {
         eggx_drawstr(this->win_num, x, y, size, 0.0, args);
     }
 
     /// x, y = penx, peny
-    void drow_text(int size, const char *args)
+    void draw_text(int size, const char *args)
     {
         eggx_drawstr(this->win_num, this->penx, this->peny, size, 0.0, args);
     }
@@ -227,7 +234,8 @@ public:
     }
 
     /// DISABLE = 0, ENABLE = -1
-    void set_non_block(int flag){
+    void set_non_block(int flag)
+    {
         eggx_gsetnonblock(flag);
     }
 
@@ -236,7 +244,25 @@ public:
         return eggx_ggetch();
     }
 
-    static void sleep(unsigned long mills){
+    void get_key_click(int *type, int *button, double *x, double *y)
+    {
+        int ltype, lbutton;
+        double lx, ly;
+        int wn = 0;
+        printf("listner_th2\n");
+        while (wn != this->win_num)
+        {
+            printf("listner_th3\n");
+            wn = eggx_ggetxpress(&ltype, &lbutton, &lx, &ly);
+        }
+        *type = ltype;
+        *button = lbutton;
+        *x = lx;
+        *y = ly;
+    }
+
+    static void sleep(unsigned long mills)
+    {
         eggx_msleep(mills);
     }
 
