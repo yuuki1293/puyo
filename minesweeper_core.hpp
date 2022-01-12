@@ -46,6 +46,8 @@ public:
     /// 0:プレイ中 1:ゲームオーバー 2:クリア
     int get_status();
 
+    int get_rest_bomb();
+
     MSCore(int, int, int);
 };
 
@@ -110,6 +112,11 @@ int MSCore::right_click(posi cell)
 inline int MSCore::get_status()
 {
     return status;
+}
+
+inline int MSCore::get_rest_bomb()
+{
+    return bombs.size() - flags.size();
 }
 
 MSCore::MSCore(int row, int column, int bomb_num)

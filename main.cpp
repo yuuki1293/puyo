@@ -3,6 +3,7 @@ int column = 50;
 int row = 40;
 int bombs = 200;
 
+const char *color_text = "#FFFFFF";
 const char *color_behind = "#000000";
 const char *color_unknown = "#E0E0E0";
 const char *color_flag = "#F8FF00";
@@ -44,6 +45,9 @@ void draw_cell(int type, int column, int row)
         weggx->pen_down();
         weggx->move_pen(column * 32 + 21,row * 32 + 230);
         weggx->pen_up();
+        weggx->set_pen_color(color_text);
+        weggx->move_pen(30, 100);
+        weggx->draw_text(20, ("bombs:" + std::to_string(mscore->get_rest_bomb())).c_str());
         break;}
     case bomb:{
         weggx->set_pen_color(color_bomb);
@@ -138,7 +142,6 @@ int main(int argc, char *argv[])
         column = atoi(argv[2]);
         bombs = atoi(argv[3]);
     }
-    printf("%d %d %d\n",row, column, bombs);
     weggx = new Weggx("mine sweeper");
     mscore = new MSCore(row, column, bombs);
     setup();
