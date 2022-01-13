@@ -1,7 +1,7 @@
 /* config */
 int column = 50;
 int row = 40;
-int bombs = 200;
+int bombs = 400;
 
 const char *color_text = "#FFFFFF";
 const char *color_behind = "#000000";
@@ -21,6 +21,7 @@ const int bomb = -3;
 
 int to_column(double x) { return (x - 10) / 32; }
 int to_row(double y) { return (y - 200) / 32; }
+int around[8][2] = {{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}};
 
 std::vector<std::vector<int>> cell;
 
@@ -75,6 +76,21 @@ void draw_cells()
     draw_cell(cell[i][j], j, i);
 }
 
+void open_around(int rowo, int columno)
+{
+    int row, column;
+    for(int i = 0; i < 8; i++)
+    {
+        row = rowo + around[i][0];
+        column = columno + around[i][1];
+        int result = mscore->left_click(posi{row, column});
+        if (result <= -2);
+        else if(result == -1) cell[row][column] = bomb;
+        else if(result == 0) { open_around(row, column); cell[row][column] = result; }
+        else cell[row][column] = result;
+    }
+}
+
 void setup()
 {
     cell.resize(row);
@@ -108,6 +124,7 @@ void start()
                 result = mscore->left_click(posi{row, column});
                 if (result <= -2);
                 else if(result == -1) cell[row][column] = bomb;
+                else if(result == 0) { open_around(row, column); cell[row][column] = result; }
                 else cell[row][column] = result;
                 break;
             case 2: //中
