@@ -128,6 +128,8 @@ void start()
                 else cell[row][column] = result;
                 break;
             case 2: //中
+                if (cell[row][column] >= 0 && cell[row][column] == mscore->get_around_flags(posi{row, column}))
+                    open_around(row, column);
                 break;
             case 3: //右
                 result = mscore->right_click(posi{row, column});
@@ -152,7 +154,7 @@ int main(int argc, char *argv[])
     eggx_gsetinitialattributes(ENABLE, SCROLLBAR_INTERFACE);
     eggx_gsetinitialattributes(DISABLE, MAX_WINDOW_SIZE);
     eggx_gsetinitialattributes(DISABLE, OVERRIDE_REDIRECT);
-    eggx_gsetinitialattributes(DISABLE, DOCK_APPLICATION); //TODO weggxの初期化を後でする
+    eggx_gsetinitialattributes(DISABLE, DOCK_APPLICATION);
     if(argc >= 3)
     {
         row = atoi(argv[1]);

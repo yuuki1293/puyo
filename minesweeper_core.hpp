@@ -46,7 +46,11 @@ public:
     /// 0:プレイ中 1:ゲームオーバー 2:クリア
     int get_status();
 
+    /// 残りの爆弾の数
     int get_rest_bomb();
+
+    /// 周りの旗の数
+    int get_around_flags(posi);
 
     MSCore(int, int, int);
 };
@@ -117,6 +121,15 @@ inline int MSCore::get_status()
 inline int MSCore::get_rest_bomb()
 {
     return bombs.size() - flags.size();
+}
+
+int MSCore::get_around_flags(posi cell)
+{
+    int neighbor_flags_count = 0;
+    for (size_t i = 0; i < flags.size(); i++)
+        if (cell.is_neighbor(flags[i]))
+            neighbor_flags_count++;
+    return neighbor_flags_count;
 }
 
 MSCore::MSCore(int row, int column, int bomb_num)
