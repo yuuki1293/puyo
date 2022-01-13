@@ -144,7 +144,16 @@ void start()
             weggx->show();
         }
     }
-    if(mscore->get_status() == 1) printf("ゲームオーバーだよ!\n");
+    if(mscore->get_status() == 1) 
+    {
+        for (int i = 0; i < row; i++)
+        for (int j = 0; j < column; j++)
+        if(mscore->left_click(posi{i, j}) == -1)
+            cell[i][j] = bomb;
+        draw_cells();
+        weggx->show();
+        printf("ゲームオーバーだよ!\n");
+    }
     else printf("クリアだよ!\n");
 }
 
