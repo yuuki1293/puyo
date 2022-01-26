@@ -1,7 +1,7 @@
 /* config */
-int column = 50;
-int row = 40;
-int bombs = 400;
+int column = 7;
+int row = 10;
+int bombs = 11;
 
 const char *color_text = "#FFFFFF";
 const char *color_behind = "#000000";
@@ -154,7 +154,10 @@ void start()
         weggx->show();
         printf("ゲームオーバーだよ!\n");
     }
-    else printf("クリアだよ!\n");
+    else if(mscore->get_status() == 2) 
+        printf("クリアだよ!\n");
+    else
+        printf("unexpected result\n");
 }
 
 int main(int argc, char *argv[])
@@ -175,5 +178,5 @@ int main(int argc, char *argv[])
     setup();
     start();
     while (true)
-        ; // NOTE 正常終了するとバグが発生するのでCtrl+Cもしくは例外を発生させる
+        ; // NOTE 正常終了するとバグが発生する
 }

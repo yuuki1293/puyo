@@ -181,7 +181,7 @@ MSCore::MSCore(int row, int column, int bomb_num)
 
     for (int i = 0; i < bomb_num; i++)
     {
-        int r = tmp[i] / row;
+        int r = tmp[i] / column;
         int c = tmp[i] % column;
         bombs[i] = posi{r, c};
     }
